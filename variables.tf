@@ -18,7 +18,7 @@ variable "cluster_configurations" {
     kubernetes_version = string
     node_pools = list(object({
       name            = string
-      use_private_network = optional(bool, true)
+      use_private_network = optional(bool, false)
       server_type     = string
       server_location = string
       image           = string
