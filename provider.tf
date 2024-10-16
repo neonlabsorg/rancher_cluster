@@ -56,6 +56,7 @@ provider "kubectl" {
   token            = local.raw_kubeconfig["users"][0]["user"]["token"]
   insecure         = true
   load_config_file = false
+  apply_retry_count = 10
 }
 
 provider "github" {
