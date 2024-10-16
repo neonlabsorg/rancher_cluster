@@ -15,9 +15,9 @@ resource "rancher2_node_template" "hetzner" {
     networks            = var.management_network_id
     use_private_network = each.value.use_private_network
   }
-  labels = {
+  labels = merge({
     "cluster-name" = var.cluster_name
-  }
+  }, each.value.labels)
   lifecycle {
     ignore_changes = [name] # Fix to don't destroy test cluster
   }
@@ -33,7 +33,7 @@ resource "rancher2_node_pool" "hetzner" {
   control_plane    = each.value.control_plane
   etcd             = each.value.etcd
   worker           = each.value.worker
-  labels           = each.value.labels
+
   dynamic "node_taints" {
     for_each = each.value.node_taints != null ? each.value.node_taints : []
     content {
