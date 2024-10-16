@@ -10,10 +10,6 @@ resource "github_repository_deploy_key" "main" {
   read_only  = false
 }
 
-resource "kubectl_manifest" "flux_namespace" {
-  yaml_body = templatefile("${path.module}/manifests/flux-namespace.yaml", { flux_namespace = var.flux_namespace })
-}
-
 resource "flux_bootstrap_git" "main" {
   embedded_manifests = true
   network_policy     = true
