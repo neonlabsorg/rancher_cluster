@@ -21,5 +21,5 @@ resource "flux_bootstrap_git" "main" {
   image_pull_secret  = var.flux_image_pull_secret
   path               = try(length(var.flux_repo_target_path), 0) > 0 ? var.flux_repo_target_path : "clusters/hcloud-${var.cluster_name}"
 
-  depends_on = [github_repository_deploy_key.main, rancher2_cluster.hetzner, kubectl_manifest.flux_namespace]
+  depends_on = [github_repository_deploy_key.main, rancher2_cluster.hetzner]
 }
