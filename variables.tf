@@ -26,6 +26,7 @@ variable "cluster_configurations" {
       control_plane   = bool
       etcd            = bool
       worker          = bool
+      autoscaling     = optional(bool, false)
       labels          = optional(map(string))
       node_taints = optional(list(object({
         key    = string
