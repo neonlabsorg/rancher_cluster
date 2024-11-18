@@ -16,6 +16,7 @@ resource "rancher2_node_template" "hetzner" {
     server_type         = each.value.server_type
     networks            = var.management_network_id
     use_private_network = each.value.use_private_network
+    userdata            = "${path.module}/cloud-init/config-docker-daemon-json.yaml"
   }
   labels = merge({
     "cluster-name" = var.cluster_name
