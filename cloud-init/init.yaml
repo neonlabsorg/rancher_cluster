@@ -12,5 +12,5 @@ write_files:
       {
         "log-driver": "json-file",
         "log-opts": {"max-size": "5000m", "max-file": "1"},
-        "default-ulimits": {"nofile": {"Soft": 640000, "Hard": 640000, "Name": "nofile"}}
+        "default-ulimits": {"nofile": {"Soft": 1048576, "Hard": 1048576, "Name": "nofile"}}
       }
