@@ -14,3 +14,6 @@ write_files:
         "log-opts": {"max-size": "5000m", "max-file": "1"},
         "default-ulimits": {"nofile": {"Soft": 1048576, "Hard": 1048576, "Name": "nofile"}}
       }
+
+runcmd:
+ - sed -i -e 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
