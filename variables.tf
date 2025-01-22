@@ -127,3 +127,9 @@ variable "flux_image_pull_secret" {
   default     = null
   description = "Kubernetes secret name used for pulling the toolkit images from a private registry"
 }
+
+variable "firewall_whitelist_ipv4" {
+  type         = string
+  default      = []
+  description  = "List of ipv4 addresses which will be whitelisted in cluster nodes (e.g. VPN node public ipv4)"
+}
