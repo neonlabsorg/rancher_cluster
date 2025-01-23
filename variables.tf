@@ -129,7 +129,7 @@ variable "flux_image_pull_secret" {
 }
 
 variable "firewall_whitelist_ipv4" {
-  type         = string
+  type         = list(string)
   default      = []
   description  = "List of ipv4 addresses which will be whitelisted in cluster nodes (e.g. VPN node public ipv4)"
 }
