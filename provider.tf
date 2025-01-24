@@ -1,5 +1,9 @@
 terraform {
   required_providers {
+    hcloud = {
+      source = "hetznercloud/hcloud"
+      version = "1.49.1"
+    }
     rancher2 = {
       source  = "rancher/rancher2"
       version = ">= 3.2.0"
@@ -62,4 +66,14 @@ provider "kubectl" {
 provider "github" {
   owner = var.github_repository_owner
   token = var.github_token
+}
+
+provider "kubectl" {
+  alias = "rancher_mgmt_cluster"
+  host = data.tfe_outputs.hcloud_main.nonsensitive_values.rancher_mgmt_cluster_host
+
+  client_certificate     = data.tfe_outputs.hcloud_main.nonsensitive_values.rancher_mgmt_cluster_client_cert
+  client_key             = data.tfe_outputs.hcloud_main.nonsensitive_values.rancher_mgmt_cluster_client_key
+  cluster_ca_certificate = data.tfe_outputs.hcloud_main.nonsensitive_values.rancher_mgmt_cluster_ca
+  load_config_file       = false
 }

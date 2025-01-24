@@ -1,0 +1,55 @@
+apiVersion: management.cattle.io/v3
+hetznerConfig:
+  apiToken: ${hcloud_token}
+  autoSpread: false
+  disablePublic: false
+  disablePublic4: false
+  disablePublic6: false
+  disablePublicIpv4: false
+  disablePublicIpv6: false
+  existingKeyId: "0"
+  existingKeyPath: ""
+  firewalls:
+    - ${firewall_id}
+  image: ${image}
+  imageArch: ""
+  imageId: ""
+  placementGroup: ""
+  primaryIpv4: ""
+  primaryIpv6: ""
+  serverLocation: ${server_location}
+  serverType: ${server_type}
+  sshPort: "22"
+  sshUser: root
+  usePrivateNetwork: ${use_private_network}
+  userData: |-
+    ${userdata}
+  userDataFile: ""
+  userDataFromFile: false
+  waitForRunningTimeout: "0"
+  waitOnError: "0"
+  waitOnPolling: "1"
+kind: NodeTemplate
+metadata:
+  labels:
+    cattle.io/creator: norman
+    cluster-name: ${cluster_name}
+    workload: ingress
+  name: nt-${name_hash}
+  namespace: cattle-global-nt
+spec:
+  authCertificateAuthority: ""
+  authKey: ""
+  cloudCredentialName: ""
+  description: ""
+  displayName: ${name}
+  driver: hetzner
+  engineEnv: {}
+  engineInsecureRegistry: []
+  engineInstallURL: ""
+  engineLabel: {}
+  engineOpt: {}
+  engineRegistryMirror: []
+  engineStorageDriver: ""
+  nodeTaints: []
+  useInternalIpAddress: true
