@@ -1,5 +1,32 @@
 apiVersion: management.cattle.io/v3
+kind: NodeTemplate
+metadata:
+  annotations:
+    field.cattle.io/creatorId: ${default_admin_id}
+    ownerBindingsCreated: 'true'
+  labels:
+    cattle.io/creator: norman
+    cluster-name: ${cluster_name}
+  name: nt-${name_hash}
+  namespace: cattle-global-nt
+spec:
+  authCertificateAuthority: null
+  authKey: null
+  cloudCredentialName: ""
+  description: null
+  displayName: ${name}
+  driver: hetzner
+  engineEnv: {}
+  engineInsecureRegistry: []
+  engineInstallURL: null
+  engineLabel: {}
+  engineOpt: {}
+  engineRegistryMirror: []
+  engineStorageDriver: null
+  nodeTaints: []
+  useInternalIpAddress: true
 hetznerConfig:
+  additionalKey: ""
   apiToken: ${hcloud_token}
   autoSpread: false
   disablePublic: false
@@ -10,7 +37,7 @@ hetznerConfig:
   existingKeyId: "0"
   existingKeyPath: ""
   firewalls:
-    - ${firewall_id}
+    - '${firewall_id}'
   image: ${image}
   imageArch: ""
   imageId: ""
@@ -21,6 +48,8 @@ hetznerConfig:
   serverType: ${server_type}
   sshPort: "22"
   sshUser: root
+  volumes: []
+  networks: []
   usePrivateNetwork: ${use_private_network}
   userData: |-
     ${userdata}
@@ -29,27 +58,4 @@ hetznerConfig:
   waitForRunningTimeout: "0"
   waitOnError: "0"
   waitOnPolling: "1"
-kind: NodeTemplate
-metadata:
-  labels:
-    cattle.io/creator: norman
-    cluster-name: ${cluster_name}
-    workload: ingress
-  name: nt-${name_hash}
-  namespace: cattle-global-nt
-spec:
-  authCertificateAuthority: ""
-  authKey: ""
-  cloudCredentialName: ""
-  description: ""
-  displayName: ${name}
-  driver: hetzner
-  engineEnv: {}
-  engineInsecureRegistry: []
-  engineInstallURL: ""
-  engineLabel: {}
-  engineOpt: {}
-  engineRegistryMirror: []
-  engineStorageDriver: ""
-  nodeTaints: []
-  useInternalIpAddress: true
+
