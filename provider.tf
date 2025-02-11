@@ -68,6 +68,8 @@ provider "github" {
   token = var.github_token
 }
 
+### Because we use custom nodeTemplates manifests, we have to put it directly to rancher mgmt cluster, so this provider connects to mgmt cluster
+
 provider "kubectl" {
   alias = "rancher_mgmt_cluster"
   host  = data.tfe_outputs.hcloud_main.nonsensitive_values.rancher_mgmt_cluster_host

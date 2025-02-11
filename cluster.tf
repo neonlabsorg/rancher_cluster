@@ -5,11 +5,13 @@ locals {
   autoscaled_node_pools     = merge([{ for node_pool in var.cluster_configurations.node_pools : "${var.cluster_name}--${node_pool.name}" => node_pool if node_pool.autoscaling }]...)
 }
 
+
 resource "rancher2_node_pool" "hetzner" {
   for_each         = local.required_node_pools
   cluster_id       = rancher2_cluster.hetzner.id
   name             = each.key
   hostname_prefix  = each.key
+  ### We use custom nodeTemplates; their id has format namespace:nt-***** where * can be a-z or 0-9 symbols;
   node_template_id = "cattle-global-nt:nt-${random_string._template_name_hash["${each.value.server_type}--${each.value.server_location}--${each.value.image}--${each.value.name}"].result}"
   quantity         = each.value.quantity
   control_plane    = each.value.control_plane
@@ -32,6 +34,7 @@ resource "rancher2_node_pool" "hetzner-autoscaled" {
   cluster_id       = rancher2_cluster.hetzner.id
   name             = each.key
   hostname_prefix  = each.key
+  ### We use custom nodeTemplates; their id has format namespace:nt-***** where * can be a-z or 0-9 symbols;
   node_template_id = "cattle-global-nt:nt-${random_string._autoscaled_template_name_hash["${each.value.server_type}--${each.value.server_location}--${each.value.image}--${each.value.name}"].result}"
   quantity         = each.value.quantity
   control_plane    = each.value.control_plane
@@ -95,6 +98,9 @@ resource "rancher2_cluster_sync" "hetzner" {
   node_pool_ids = concat([for node_pool in rancher2_node_pool.hetzner : node_pool.id], [for node_pool in rancher2_node_pool.hetzner-autoscaled : node_pool.id])
 }
 
+### This code creates nodeTemplates named nt-***** where * can be a-z or 0-9 symbols;
+### Needed because standard nodeTemplate names are like nt-jb289
+
 resource "random_string" "_template_name_hash" {
   for_each = local.required_node_templates
   length   = 5
@@ -109,10 +115,15 @@ resource "random_string" "_autoscaled_template_name_hash" {
   upper    = false
 }
 
+### We need to create custom nodeTemplate.yaml resource rancher terraform provider doesn't support hcloud firewall for rancher2_node_template resource 
+
 resource "kubectl_manifest" "node_template" {
   provider = kubectl.rancher_mgmt_cluster
   for_each = local.required_node_templates
+  # Ref: https://github.com/rancher/rancher/blob/c00c7e0f1a3a5f956ae600b2d0d293357f161284/pkg/apis/management.cattle.io/v3/machine_types.go#L50-L54
+  # Ref: https://github.com/JonasProgrammer/docker-machine-driver-hetzner/blob/d97bd3baac3a3d09b0384829b7a05f00e0e7784d/driver/driver.go#L69-L115
   yaml_body = nonsensitive(templatefile("${path.module}/templates/node-template.yaml.tftpl", {
+    ### nodeTemplate object requires owner id, which by default is admin
     default_admin_id    = data.rancher2_user.default_admin.id
     hcloud_token        = var.hetzner_token
     name                = each.key
@@ -129,10 +140,11 @@ resource "kubectl_manifest" "node_template" {
 
 resource "kubectl_manifest" "autoscaled_node_template" {
   provider = kubectl.rancher_mgmt_cluster
+  for_each = local.autoscaled_node_templates
   # Ref: https://github.com/rancher/rancher/blob/c00c7e0f1a3a5f956ae600b2d0d293357f161284/pkg/apis/management.cattle.io/v3/machine_types.go#L50-L54
   # Ref: https://github.com/JonasProgrammer/docker-machine-driver-hetzner/blob/d97bd3baac3a3d09b0384829b7a05f00e0e7784d/driver/driver.go#L69-L115
-  for_each = local.autoscaled_node_templates
   yaml_body = nonsensitive(templatefile("${path.module}/templates/node-template.yaml.tftpl", {
+    ### nodeTemplate object requires owner id, which by default is admin
     default_admin_id    = data.rancher2_user.default_admin.id
     hcloud_token        = var.hetzner_token
     name                = each.key
