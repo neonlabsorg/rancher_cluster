@@ -10,23 +10,22 @@ metadata:
   name: nt-${name_hash}
   namespace: cattle-global-nt
 spec:
-  authCertificateAuthority: null
-  authKey: null
-  cloudCredentialName: ""
-  description: null
+  authCertificateAuthority: ''
+  authKey: ''
+  cloudCredentialName: ''
+  description: ''
   displayName: ${name}
   driver: hetzner
   engineEnv: {}
   engineInsecureRegistry: []
-  engineInstallURL: null
+  engineInstallURL: ''
   engineLabel: {}
   engineOpt: {}
   engineRegistryMirror: []
-  engineStorageDriver: null
+  engineStorageDriver: ''
   nodeTaints: []
   useInternalIpAddress: true
 hetznerConfig:
-  additionalKey: ""
   apiToken: ${hcloud_token}
   autoSpread: false
   disablePublic: false
@@ -34,8 +33,8 @@ hetznerConfig:
   disablePublic6: false
   disablePublicIpv4: false
   disablePublicIpv6: false
-  existingKeyId: "0"
-  existingKeyPath: ""
+  existingKeyId: '0'
+  existingKeyPath: ''
   firewalls:
     - '${firewall_id}'
   image: ${image}
@@ -46,16 +45,14 @@ hetznerConfig:
   primaryIpv6: ""
   serverLocation: ${server_location}
   serverType: ${server_type}
-  sshPort: "22"
+  sshPort: '22'
   sshUser: root
-  volumes: []
-  networks: []
   usePrivateNetwork: ${use_private_network}
   userData: |-
     ${userdata}
-  userDataFile: ""
+  userDataFile: ''
   userDataFromFile: false
-  waitForRunningTimeout: "0"
-  waitOnError: "0"
-  waitOnPolling: "1"
+  waitForRunningTimeout: '0'
+  waitOnError: '0'
+  waitOnPolling: '1'
 
