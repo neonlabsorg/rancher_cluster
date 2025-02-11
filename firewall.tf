@@ -6,6 +6,10 @@ resource "hcloud_firewall" "node_firewall_ssh" {
     port       = "22"
     source_ips = concat(data.tfe_outputs.hcloud_main.nonsensitive_values.rancher_nodes_ipv4, var.firewall_whitelist_ipv4)
   }
+  # ref: https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-requirements/port-requirements#ports-for-rancher-server-nodes-on-rke
+  # ref: https://kubernetes.io/docs/reference/networking/ports-and-protocols/
+  # ref: https://docs.tigera.io/calico/latest/getting-started/kubernetes/requirements
+  # ref: https://platform9.com/docs/kubernetes/networking-integration-with-flannel
   rule {
     direction   = "in"
     protocol    = "tcp"
@@ -67,7 +71,7 @@ resource "hcloud_firewall" "node_firewall_ssh" {
     protocol    = "tcp"
     port        = "10249"
     source_ips  = ["0.0.0.0/0", "::/0"]
-    description = "metrics"
+    description = "prometheus-operator metrics"
   }
   rule {
     direction   = "in"
@@ -95,28 +99,28 @@ resource "hcloud_firewall" "node_firewall_ssh" {
     protocol    = "tcp"
     port        = "10259"
     source_ips  = ["0.0.0.0/0", "::/0"]
-    description = "	kube-scheduler"
+    description = "kube-scheduler"
   }
   rule {
     direction   = "in"
     protocol    = "tcp"
     port        = "9100"
     source_ips  = ["0.0.0.0/0", "::/0"]
-    description = "http-metrics"
+    description = "prometheus-operator http-metrics"
   }
   rule {
     direction   = "in"
     protocol    = "tcp"
     port        = "4149"
     source_ips  = ["0.0.0.0/0", "::/0"]
-    description = "cadvisor"
+    description = "prometheus-operator cadvisor"
   }
   rule {
     direction   = "in"
     protocol    = "tcp"
     port        = "10255"
     source_ips  = ["0.0.0.0/0", "::/0"]
-    description = "http-metrics"
+    description = "prometheus-operator http-metrics"
   }
   rule {
     direction   = "in"
