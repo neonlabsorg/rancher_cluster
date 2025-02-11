@@ -11,10 +11,10 @@ resource "rancher2_node_pool" "hetzner" {
   name             = each.key
   hostname_prefix  = each.key
   node_template_id = "cattle-global-nt:nt-${random_string._template_name_hash["${each.value.server_type}--${each.value.server_location}--${each.value.image}--${each.value.name}"].result}"
-  quantity      = each.value.quantity
-  control_plane = each.value.control_plane
-  etcd          = each.value.etcd
-  worker        = each.value.worker
+  quantity         = each.value.quantity
+  control_plane    = each.value.control_plane
+  etcd             = each.value.etcd
+  worker           = each.value.worker
 
   dynamic "node_taints" {
     for_each = each.value.node_taints != null ? each.value.node_taints : []
@@ -28,10 +28,10 @@ resource "rancher2_node_pool" "hetzner" {
 }
 
 resource "rancher2_node_pool" "hetzner-autoscaled" {
-  for_each        = local.autoscaled_node_pools
-  cluster_id      = rancher2_cluster.hetzner.id
-  name            = each.key
-  hostname_prefix = each.key
+  for_each         = local.autoscaled_node_pools
+  cluster_id       = rancher2_cluster.hetzner.id
+  name             = each.key
+  hostname_prefix  = each.key
   node_template_id = "cattle-global-nt:nt-${random_string._autoscaled_template_name_hash["${each.value.server_type}--${each.value.server_location}--${each.value.image}--${each.value.name}"].result}"
   quantity         = each.value.quantity
   control_plane    = each.value.control_plane
@@ -111,7 +111,7 @@ resource "random_string" "_autoscaled_template_name_hash" {
 
 resource "kubectl_manifest" "node_template" {
   provider = kubectl.rancher_mgmt_cluster
-  for_each  = local.required_node_templates
+  for_each = local.required_node_templates
   yaml_body = nonsensitive(templatefile("${path.module}/templates/node-template.yaml.tftpl", {
     default_admin_id    = data.rancher2_user.default_admin.id
     hcloud_token        = var.hetzner_token
