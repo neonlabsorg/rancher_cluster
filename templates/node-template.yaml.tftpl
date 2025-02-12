@@ -35,8 +35,10 @@ hetznerConfig:
   disablePublicIpv6: false
   existingKeyId: '0'
   existingKeyPath: ''
+  %{ if enable_firewall == true }
   firewalls:
     - '${firewall_id}'
+  %{ endif }
   image: ${image}
   imageArch: ""
   imageId: ""

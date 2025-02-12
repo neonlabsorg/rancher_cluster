@@ -128,6 +128,7 @@ resource "kubectl_manifest" "node_template" {
     hcloud_token        = var.hetzner_token
     name                = each.key
     name_hash           = random_string._template_name_hash[each.key].result
+    enable_firewall     = each.value.enable_firewall
     firewall_id         = hcloud_firewall.node_firewall_ssh.id
     cluster_name        = var.cluster_name
     image               = each.value.image
@@ -149,6 +150,7 @@ resource "kubectl_manifest" "autoscaled_node_template" {
     hcloud_token        = var.hetzner_token
     name                = each.key
     name_hash           = random_string._autoscaled_template_name_hash[each.key].result
+    enable_firewall     = each.value.enable_firewall
     firewall_id         = hcloud_firewall.node_firewall_ssh.id
     cluster_name        = var.cluster_name
     image               = each.value.image

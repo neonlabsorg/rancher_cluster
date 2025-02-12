@@ -19,6 +19,7 @@ variable "cluster_configurations" {
     node_pools = list(object({
       name                = string
       use_private_network = optional(bool, false)
+      enable_firewall     = optional(bool, true)
       server_type         = string
       server_location     = string
       image               = string
