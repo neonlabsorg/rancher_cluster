@@ -17,17 +17,18 @@ variable "cluster_configurations" {
     description        = string
     kubernetes_version = string
     node_pools = list(object({
-      name            = string
+      name                = string
       use_private_network = optional(bool, false)
-      server_type     = string
-      server_location = string
-      image           = string
-      quantity        = number
-      control_plane   = bool
-      etcd            = bool
-      worker          = bool
-      autoscaling     = optional(bool, false)
-      labels          = optional(map(string))
+      enable_firewall     = optional(bool, true)
+      server_type         = string
+      server_location     = string
+      image               = string
+      quantity            = number
+      control_plane       = bool
+      etcd                = bool
+      worker              = bool
+      autoscaling         = optional(bool, false)
+      labels              = optional(map(string))
       node_taints = optional(list(object({
         key    = string
         value  = string
@@ -126,4 +127,10 @@ variable "flux_image_pull_secret" {
   type        = string
   default     = null
   description = "Kubernetes secret name used for pulling the toolkit images from a private registry"
+}
+
+variable "firewall_whitelist_ipv4" {
+  type        = list(string)
+  default     = []
+  description = "List of ipv4 addresses which will be whitelisted in cluster nodes (e.g. VPN node public ipv4)"
 }
