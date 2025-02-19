@@ -6,7 +6,9 @@ metadata:
     ownerBindingsCreated: 'true'
   labels:
     cattle.io/creator: norman
-    cluster-name: ${cluster_name}
+    %{ for label_key, label_value in labels }
+    ${label_key}: ${label_value}
+    %{ endfor }
   name: nt-${name_hash}
   namespace: cattle-global-nt
 spec:
