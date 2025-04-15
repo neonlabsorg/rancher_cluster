@@ -13,7 +13,7 @@ resource "hcloud_firewall" "node_firewall_ssh" {
   rule {
     direction   = "in"
     protocol    = "tcp"
-    port        = "2376"
+    port        = "2375-2376"
     source_ips  = ["0.0.0.0/0", "::/0"]
     description = "Docker daemon TLS port used by Docker Machine"
   }
