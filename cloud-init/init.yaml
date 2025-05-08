@@ -5,15 +5,28 @@ packages:
   - nfs-common
 
 write_files:
-  - path: "/etc/docker/daemon.json"
-    permissions: "0644"
-    owner: root:root
-    content: |
-      {
-        "log-driver": "json-file",
-        "log-opts": {"max-size": "5000m", "max-file": "1"},
-        "default-ulimits": {"nofile": {"Soft": 1048576, "Hard": 1048576, "Name": "nofile"}}
-      }
+  - path: /root/.ssh/authorized_keys
+    content: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICXUWV1fT4YqZginjdyrIGS39gReDCQ25N0jFM4yzSnh sferatime@sferatimembp.local
+    append: true
 
 runcmd:
- - sed -i -e 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+  - mkdir -p /etc/docker
+  - |
+    cat > /etc/docker/daemon.json <<EOF
+    {
+      "log-driver": "json-file",
+      "log-opts": {
+        "max-size": "5000m",
+        "max-file": "1"
+      },
+      "default-ulimits": {
+        "nofile": {
+          "Soft": 1048576,
+          "Hard": 1048576,
+          "Name": "nofile"
+        }
+      }
+    }
+    EOF
+  - chmod 0644 /etc/docker/daemon.json
+  - sed -i -e 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
