@@ -4,11 +4,6 @@ package_update: true
 packages:
   - nfs-common
 
-write_files:
-  - path: /root/.ssh/authorized_keys
-    content: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICXUWV1fT4YqZginjdyrIGS39gReDCQ25N0jFM4yzSnh sferatime@sferatimembp.local
-    append: true
-
 runcmd:
   - mkdir -p /etc/docker
   - |
