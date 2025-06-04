@@ -93,10 +93,10 @@ metadata:
   }
 }
 
-resource "rancher2_cluster_sync" "hetzner" {
-  cluster_id    = rancher2_cluster.hetzner.id
-  node_pool_ids = concat([for node_pool in rancher2_node_pool.hetzner : node_pool.id], [for node_pool in rancher2_node_pool.hetzner-autoscaled : node_pool.id])
-}
+# resource "rancher2_cluster_sync" "hetzner" {
+#   cluster_id    = rancher2_cluster.hetzner.id
+#   node_pool_ids = concat([for node_pool in rancher2_node_pool.hetzner : node_pool.id], [for node_pool in rancher2_node_pool.hetzner-autoscaled : node_pool.id])
+# }
 
 ### This code creates nodeTemplates named nt-***** where * can be a-z or 0-9 symbols;
 ### Needed because standard nodeTemplate names are like nt-jb289
