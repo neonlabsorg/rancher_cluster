@@ -163,7 +163,11 @@ resource "kubectl_manifest" "autoscaled_node_template" {
   }))
 }
 
+data "kubectl_path_documents" "ccm-networks-robot-manifest" {
+  pattern = "${path.module}/manifests/ccm-networks-robot.yaml"
+}
+
 resource "kubectl_manifest" "ccm-networks-robot" {
-  count = var.enable_robot_support ? 1 : 0
-  yaml_body = file("${path.module}/manifests/ccm-networks-robot.yaml")
+  for_each  = var.enable_robot_support ? data.kubectl_path_documents.ccm-networks-robot-manifest.manifests : []
+  yaml_body = each.value
 }
