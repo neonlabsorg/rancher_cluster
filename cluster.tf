@@ -66,7 +66,7 @@ apiVersion: v1
 stringData:
   token: ${var.hetzner_token}
   network: ${var.management_network_name}
-  robot-user: ${var.robot_user}
+  robot-user: "${var.robot_user}"
   robot-password: ${var.robot_password}
 kind: Secret
 metadata:
@@ -168,6 +168,6 @@ data "kubectl_path_documents" "ccm-networks-robot-manifest" {
 }
 
 resource "kubectl_manifest" "ccm-networks-robot" {
-  for_each  = var.enable_robot_support ? data.kubectl_path_documents.ccm-networks-robot-manifest.manifests : []
+  for_each  = var.enable_robot_support ? data.kubectl_path_documents.ccm-networks-robot-manifest.manifests : {}
   yaml_body = each.value
 }
