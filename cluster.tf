@@ -165,5 +165,5 @@ resource "kubectl_manifest" "autoscaled_node_template" {
 
 resource "kubectl_manifest" "ccm-networks-robot" {
   count = var.enable_robot_support ? 1 : 0
-  yaml_body = templatefile("${path.module}/manifests/ccm-networks-robot.yaml")
+  yaml_body = file("${path.module}/manifests/ccm-networks-robot.yaml")
 }
