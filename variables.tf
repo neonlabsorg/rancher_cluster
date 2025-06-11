@@ -134,3 +134,24 @@ variable "firewall_whitelist_ipv4" {
   default     = []
   description = "List of ipv4 addresses which will be whitelisted in cluster nodes (e.g. VPN node public ipv4)"
 }
+
+# Optional Robot support
+variable "enable_robot_support" {
+  type        = bool
+  default     = false
+  description = "Enable Hetzner Robot support in hcloud-cloud-controller-manager"
+}
+
+variable "robot_user" {
+  type        = string
+  default     = ""
+  description = "Hetzner Robot username (required if enable_robot_support is true)"
+  sensitive   = true
+}
+
+variable "robot_password" {
+  type        = string
+  default     = ""
+  description = "Hetzner Robot password (required if enable_robot_support is true)"
+  sensitive   = true
+}

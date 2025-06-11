@@ -66,12 +66,14 @@ apiVersion: v1
 stringData:
   token: ${var.hetzner_token}
   network: ${var.management_network_name}
+  robot-user: ${var.robot_user}
+  robot-password: ${var.robot_password}
 kind: Secret
 metadata:
   name: hcloud
   namespace: kube-system
     EOF
-    addons_include = ["https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/latest/download/ccm-networks.yaml"]
+    addons_include = var.enable_robot_support ? ["${path.module}/manifests/ccm-networks-robot.yaml"] : ["https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/latest/download/ccm-networks.yaml"]
     services {
       kubelet {
         extra_args = {
