@@ -65,7 +65,7 @@ resource "rancher2_cluster" "hetzner" {
 apiVersion: v1
 stringData:
   token: ${var.hetzner_token}
-  network: ${var.management_network_name}
+  network: "${var.management_network_name}"
   robot-user: "${var.robot_user}"
   robot-password: ${var.robot_password}
 kind: Secret
