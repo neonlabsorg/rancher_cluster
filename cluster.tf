@@ -73,7 +73,7 @@ metadata:
   name: hcloud
   namespace: kube-system
     EOF
-    addons_include = var.enable_robot_support ? ["${path.module}/manifests/ccm-networks-robot.yaml"] : ["https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/latest/download/ccm-networks.yaml"]
+    addons_include = var.enable_robot_support ? [] : ["https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/latest/download/ccm-networks.yaml"]
     services {
       kubelet {
         extra_args = {
@@ -161,4 +161,9 @@ resource "kubectl_manifest" "autoscaled_node_template" {
     use_private_network = each.value.use_private_network
     userdata            = indent(4, file("${path.module}/cloud-init/init.yaml"))
   }))
+}
+
+resource "kubectl_manifest" "ccm-networks-robot" {
+  count = var.enable_robot_support ? 1 : 0
+  yaml_body = templatefile("${path.module}/manifests/ccm-networks-robot.yaml")
 }
