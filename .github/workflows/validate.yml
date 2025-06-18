@@ -5,7 +5,7 @@ on:
     - main
 jobs:
   terraform-validate:
-    runs-on: ["self-hosted", "k8s-prod"]
+    runs-on: ["gha-runner-scale-set"]
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
