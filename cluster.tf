@@ -91,7 +91,7 @@ metadata:
     }
   }
   lifecycle {
-    ignore_changes = [annotations] # Fix to don't destroy test cluster
+    ignore_changes = [annotations, rke_config.0.services.0.etcd] # Fix to don't destroy test cluster
   }
 }
 
