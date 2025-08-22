@@ -69,6 +69,31 @@ variable "github_token" {
   sensitive   = true
 }
 
+variable "etcd_backup_access_key" {
+  type        = string
+  description = "Account access key used for etcd backup"
+}
+
+variable "etcd_backup_secret_key" {
+  type        = string
+  description = "Account secret key used for etcd backup"
+}
+
+variable "etcd_backup_s3_bucket" {
+  type        = string
+  description = "S3 bucket for etcd backup"
+}
+
+variable "etcd_backup_s3_endpoint" {
+  type        = string
+  description = "S3 endpoint for etcd backup"
+}
+
+variable "etcd_backup_s3_region" {
+  type        = string
+  description = "S3 bucket region for etcd backup"
+}
+
 variable "github_repository_owner" {
   type        = string
   default     = "neonlabsorg"
